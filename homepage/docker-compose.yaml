@@ -4,8 +4,8 @@ services:
     container_name: homepage
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
-      - ${CONFIG_DIR:?error}:/app/config # Make sure your local config directory exists
-      - ${ICONS_DIR:?error}:/app/public/icons
+      - ${BASE_DIR:?error}/config:/app/config # Make sure your local config directory exists
+      - ${BASE_DIR:?error}/icons:/app/public/icons
     networks: 
       - proxy
     environment:
@@ -14,9 +14,18 @@ services:
     labels:
       # traefik config
       traefik.enable: 'true'
+
+      # http
+      traefik.http.routers.homepage.entrypoints: http
+      traefik.http.routers.homepage.rule: Host(`homepage.${DOMAIN:?error}`)
+      traefik.http.routers.homepage.middlewares: ${HTTP_MIDDLEWARES:?error}
+      traefik.http.services.homepage-svc.loadbalancer.server.port: 3000
+      traefik.http.routers.homepage.service: homepage-svc
+
+      # http
       traefik.http.routers.homepage-secure.rule: Host(`homepage.${DOMAIN:?error}`)
-      traefik.http.routers.homepage-secure.middlewares: forwardAuth-authentik@file,onlyInternal@file 
-      traefik.http.services.homepage.loadbalancer.server.port: 3000
+      traefik.http.routers.homepage-secure.middlewares: ${HTTPS_MIDDLEWARES:?error}
+
     restart: unless-stopped
     security_opt: 
       - no-new-privileges:true
