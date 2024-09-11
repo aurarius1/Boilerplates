@@ -23,6 +23,7 @@ services:
       traefik.http.routers.homepage.service: homepage-svc
 
       # http
+      traefik.http.routers.hompeage-secore.entrypoints: https
       traefik.http.routers.homepage-secure.rule: Host(`homepage.${DOMAIN:?error}`)
       traefik.http.routers.homepage-secure.middlewares: ${HTTPS_MIDDLEWARES:?error}
 
