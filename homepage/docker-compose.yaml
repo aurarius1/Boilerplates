@@ -18,13 +18,13 @@ services:
       # http
       traefik.http.routers.homepage.entrypoints: http
       traefik.http.routers.homepage.rule: Host(`homepage.${DOMAIN:?error}`)
-      traefik.http.routers.homepage.middlewares: ${HTTP_MIDDLEWARES:?error}
+      traefik.http.routers.homepage.middlewares: ${HTTP_MIDDLEWARES}
       traefik.http.routers.homepage.service: homepage-svc
 
       # http
-      traefik.http.routers.hompeage-secure.entrypoints: https
+      traefik.http.routers.homepage-secure.entrypoints: https
       traefik.http.routers.homepage-secure.rule: Host(`homepage.${DOMAIN:?error}`)
-      traefik.http.routers.homepage-secure.middlewares: ${HTTPS_MIDDLEWARES:?error}
+      traefik.http.routers.homepage-secure.middlewares: ${HTTPS_MIDDLEWARES}
 
       traefik.http.services.homepage-svc.loadbalancer.server.port: 3000
 
