@@ -16,10 +16,14 @@ services:
       traefik.enable: 'true'
 
       # http
-      traefik.http.routers.homepage.entrypoints: https
+      traefik.http.routers.homepage.entrypoints: http
       traefik.http.routers.homepage.rule: Host(`homepage.${DOMAIN:?error}`)
       traefik.http.routers.homepage.middlewares: ${HTTPS_MIDDLEWARES}
       traefik.http.routers.homepage.service: homepage
+
+      traefik.http.routers.homepage-secure.entrypoints: https
+      traefik.http.routers.homepage-secure.rule: Host(`homepage.${DOMAIN:?error}`)
+      traefik.http.routers.homepage-secure.middlewares: ${HTTPS_MIDDLEWARES}
 
       traefik.http.services.homepage.loadbalancer.server.port: 3000
 
