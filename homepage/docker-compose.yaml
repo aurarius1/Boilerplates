@@ -11,6 +11,7 @@ services:
     environment:
       PUID: ${UID:?error}
       PGID: ${GID:?error}
+      HOMEPAGE_ALLOWED_HOSTS: ${ALLOWED_HOSTS:?error}
     labels:
       # traefik config
       traefik.enable: 'true'
