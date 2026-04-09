@@ -1,0 +1,32 @@
+services:
+  it-tools:
+    image: ghcr.io/corentinth/it-tools:${TAG:?error}
+    container_name: it-tools
+    restart: "unless-stopped"
+    networks:
+      - proxy
+    labels:
+      # traefik config
+      traefik.enable: "true"
+
+      # https
+      traefik.http.routers.ittools.entrypoints: http,https
+      traefik.http.routers.ittools.rule: Host(`tools.${ITTOOLS_DOMAIN:?error}`)
+      traefik.http.routers.ittools.middlewares: ${ITTOOLS_DOMAIN_HTTP_MIDDLEWARES}
+
+      # WUD CONFIG
+      wud.watch: true
+      wud.tag.include: ^\d+\.\d+\.\d+-.*$$
+      wud.tag.transform: ^(\d+\.\d+\.\d+)-.*$$ => $$1
+
+      #homepage
+      homepage.group: ${HOMEPAGE_GROUP:?error}
+      homepage.name: ${HOMEPAGE_NAME:?error}
+      homepage.description: ${HOMEPAGE_DESCRIPTION:-}
+      homepage.icon: ${HOMEPAGE_ICON:-}
+      homepage.weight: ${HOMEPAGE_WEIGHT:0}
+      homepage.href: https://tools.${ITTOOLS_DOMAIN:?error}
+
+networks:
+  proxy:
+    external: true

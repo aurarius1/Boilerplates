@@ -1,0 +1,32 @@
+services:
+  gotify:
+    image: gotify/server:${TAG:?error}
+    container_name: gotify-server
+    networks:
+      - proxy
+    volumes:
+      - ${DATA_BASE:?error}/gotify:/app/data
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.gotify.entrypoints: http, https
+      traefik.http.routers.gotify.rule: Host(`gotify.${DOMAIN:?error}`)
+
+      # enable wud
+      wud.watch: true
+
+      #homepage
+      homepage.group: ${HOMEPAGE_GROUP:?error}
+      homepage.name: ${HOMEPAGE_NAME:?error}
+      homepage.icon: ${HOMEPAGE_ICON:?error}
+      homepage.description: ${HOMEPAGE_DESCRIPTION:-}
+      homepage.href: https://gotify.${DOMAIN:?error}
+      homepage.widget.type: gotify
+      homepage.widget.url: https://gotify.${DOMAIN:?error}
+      homepage.widget.key: ${HOMEPAGE_WIDGET_KEY:?error}
+
+    restart: unless-stopped
+    user: ${USER:?error}
+
+networks:
+  proxy:
+    external: true
