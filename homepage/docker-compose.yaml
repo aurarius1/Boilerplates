@@ -1,12 +1,12 @@
 services:
   homepage:
-    image: ghcr.io/gethomepage/homepage:latest
+    image: ghcr.io/gethomepage/homepage:${TAG:?error}
     container_name: homepage
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
       - ${BASE_DIR:?error}/config:/app/config # Make sure your local config directory exists
       - ${BASE_DIR:?error}/icons:/app/public/icons
-    networks: 
+    networks:
       - proxy
     environment:
       PUID: ${UID:?error}
@@ -14,19 +14,19 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: ${ALLOWED_HOSTS:?error}
     labels:
       # traefik config
-      traefik.enable: 'true'
+      traefik.enable: "true"
       traefik.port: 3000
       traefik.http.routers.homepage.entrypoints: http, https
       traefik.http.routers.homepage.rule: Host(`homepage.${DOMAIN:?error}`)
       traefik.http.routers.homepage.middlewares: ${HTTP_MIDDLEWARES}
 
       # enable watchtower
-      com.centurylinklabs.watchtower.enable: 'true'
+      wud.enable: true
 
     restart: unless-stopped
-    security_opt: 
+    security_opt:
       - no-new-privileges:true
 
-networks: 
-  proxy: 
+networks:
+  proxy:
     external: true
