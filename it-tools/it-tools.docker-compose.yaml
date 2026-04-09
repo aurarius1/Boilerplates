@@ -24,7 +24,7 @@ services:
       homepage.name: ${HOMEPAGE_NAME:?error}
       homepage.description: ${HOMEPAGE_DESCRIPTION:-}
       homepage.icon: ${HOMEPAGE_ICON:-}
-      homepage.weight: ${HOMEPAGE_WEIGHT:0}
+      homepage.weight: ${HOMEPAGE_WEIGHT:-0}
       homepage.href: https://tools.${ITTOOLS_DOMAIN:?error}
 
 networks:
