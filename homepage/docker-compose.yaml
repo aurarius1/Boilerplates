@@ -8,6 +8,7 @@ services:
       - ${BASE_DIR:?error}/icons:/app/public/icons
     networks:
       - proxy
+      - docker-socket-proxy
     environment:
       PUID: ${UID:?error}
       PGID: ${GID:?error}
@@ -29,4 +30,6 @@ services:
 
 networks:
   proxy:
+    external: true
+  docker-socket-proxy
     external: true
